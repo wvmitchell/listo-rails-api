@@ -1,0 +1,13 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  content: MyText
+  checked: false
+  ordering: 1
+  checklist: one
+
+two:
+  content: MyText
+  checked: false
+  ordering: 1
+  checklist: two
