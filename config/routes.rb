@@ -4,6 +4,7 @@ Rails.application.routes.draw do
   get "up" => "rails/health#show", :as => :rails_health_check
 
   resources :checklists
+  resources :users, only: %i[create show]
 
   # Defines the root path route ("/")
   # root "posts#index"
