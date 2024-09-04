@@ -10,14 +10,23 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2024_09_04_201107) do
+ActiveRecord::Schema[7.2].define(version: 2024_09_04_210100) do
   create_table "checklists", force: :cascade do |t|
     t.string "title"
-    t.boolean "locked"
+    t.boolean "locked", default: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "owner_id", null: false
     t.index ["owner_id"], name: "index_checklists_on_owner_id"
+  end
+
+  create_table "collaborations", force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.integer "checklist_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["checklist_id"], name: "index_collaborations_on_checklist_id"
+    t.index ["user_id"], name: "index_collaborations_on_user_id"
   end
 
   create_table "items", force: :cascade do |t|
@@ -38,5 +47,7 @@ ActiveRecord::Schema[7.2].define(version: 2024_09_04_201107) do
   end
 
   add_foreign_key "checklists", "users", column: "owner_id"
+  add_foreign_key "collaborations", "checklists"
+  add_foreign_key "collaborations", "users"
   add_foreign_key "items", "checklists"
 end
