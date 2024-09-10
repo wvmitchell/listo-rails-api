@@ -1,4 +1,5 @@
 class ItemsController < ApplicationController
+  before_action :authenticate
   before_action :set_checklist
 
   def index

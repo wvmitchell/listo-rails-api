@@ -7,6 +7,7 @@ Rails.application.routes.draw do
     resources :items
   end
   resources :users, only: %i[create show]
+  post "login", to: "auth#login"
 
   # Defines the root path route ("/")
   # root "posts#index"

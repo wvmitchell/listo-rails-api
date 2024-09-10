@@ -2,8 +2,8 @@
 
 one:
   user: one
-  checklist: one
+  checklist: checklist_one
 
 two:
   user: two
-  checklist: two
+  checklist: checklist_two

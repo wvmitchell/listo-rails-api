@@ -1,6 +1,7 @@
 class ChecklistsController < ApplicationController
+  before_action :authenticate
+
   def index
-    # render checklists
     render json: {
              checklists: current_user.owned_checklists,
              shared_checklists: current_user.collaborated_checklists
@@ -9,7 +10,6 @@ class ChecklistsController < ApplicationController
   end
 
   def show
-    # render checklist with items included
     render json: {
              checklist: current_user.owned_checklists.find(params[:id])
            },
@@ -25,6 +25,30 @@ class ChecklistsController < ApplicationController
     checklist = current_user.owned_checklists.find(params[:id])
     checklist.update(checklist_params)
     render json: checklist
+  end
+
+  def destroy
+    checklist = current_user.owned_checklists.find(params[:id])
+    checklist.destroy!
+
+    render json: { message: "Checklist deleted", status: :ok }
+  rescue ActiveRecord::RecordNotFound
+    render json: { message: "Checklist not found", status: :not_found }
+  rescue ActiveRecord::RecordNotDestroyed => e
+    render json: {
+             message: "Checklist could not be deleted: #{e.message}",
+             status: :unprocessable_entity
+           }
+  rescue StandardError => e
+    render json: { message: e.message, status: :unprocessable_entity }
+  end
+
+  def share
+    checklist = current_user.owned_checklists.find(params[:id])
+
+    shortcode = SecureRandom.hex(7)
+    Rails.cache.write(shortcode, checklist.id, expires_in: 1.day)
+    render json: { shortcode: shortcode }, status: :ok
   end
 
   private
