@@ -10,10 +10,13 @@ class ChecklistsController < ApplicationController
   end
 
   def show
-    render json: {
-             checklist: current_user.owned_checklists.find(params[:id])
-           },
-           include: :items
+    checklist = set_checklist
+
+    if checklist
+      render json: { checklist: checklist }, include: :items
+    else
+      render json: { message: "Checklist not found", status: :not_found }
+    end
   end
 
   def create
@@ -22,7 +25,7 @@ class ChecklistsController < ApplicationController
   end
 
   def update
-    checklist = current_user.owned_checklists.find(params[:id])
+    checklist = set_checklist
     checklist.update(checklist_params)
     render json: checklist
   end
@@ -68,7 +71,29 @@ class ChecklistsController < ApplicationController
     end
   end
 
+  def remove_collaborator
+    checklist = current_user.collaborated_checklists.find(params[:id])
+
+    if checklist.collaborators.delete(current_user)
+      render json: { message: "Collaborator removed", status: :ok }
+    else
+      render json: {
+               message: "Collaborator not removed",
+               status: :unprocessable_entity
+             }
+    end
+  end
+
   private
+
+  def set_checklist
+    if current_user.owned_checklists.exists?(params[:id])
+      @checklist = current_user.owned_checklists.find(params[:id])
+    elsif current_user.collaborated_checklists.exists?(params[:id])
+      @checklist = current_user.collaborated_checklists.find(params[:id])
+    end
+    @checklist
+  end
 
   def checklist_params
     params.require(:checklist).permit(:title, :locked)

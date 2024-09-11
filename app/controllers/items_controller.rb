@@ -35,7 +35,12 @@ class ItemsController < ApplicationController
   private
 
   def set_checklist
-    @checklist = current_user.owned_checklists.find(params[:checklist_id])
+    if current_user.owned_checklists.exists?(params[:checklist_id])
+      @checklist = current_user.owned_checklists.find(params[:checklist_id])
+    elsif current_user.collaborated_checklists.exists?(params[:checklist_id])
+      @checklist =
+        current_user.collaborated_checklists.find(params[:checklist_id])
+    end
   end
 
   def item_params

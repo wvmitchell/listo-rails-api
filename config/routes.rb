@@ -9,6 +9,7 @@ Rails.application.routes.draw do
     get "share", to: "checklists#share"
   end
   post "checklists/share/:shortcode", to: "checklists#add_collaborator"
+  delete "checklists/:id/share", to: "checklists#remove_collaborator"
 
   resources :users, only: %i[create show]
   post "login", to: "auth#login"
