@@ -44,11 +44,28 @@ class ChecklistsController < ApplicationController
   end
 
   def share
-    checklist = current_user.owned_checklists.find(params[:id])
+    checklist = current_user.owned_checklists.find(params[:checklist_id])
 
-    shortcode = SecureRandom.hex(7)
+    shortcode = SecureRandom.hex(4)
     Rails.cache.write(shortcode, checklist.id, expires_in: 1.day)
     render json: { shortcode: shortcode }, status: :ok
+  end
+
+  def add_collaborator
+    shortcode = params[:shortcode]
+    checklist_id = Rails.cache.read(shortcode)
+    checklist = Checklist.find(checklist_id)
+
+    unless current_user.owned_checklists.include?(checklist) ||
+             checklist.collaborators.include?(current_user)
+      checklist.collaborators << current_user
+      render json: { message: "Collaborator added", status: :ok }
+    else
+      render json: {
+               message: "Collaborator not added",
+               status: :unprocessable_entity
+             }
+    end
   end
 
   private

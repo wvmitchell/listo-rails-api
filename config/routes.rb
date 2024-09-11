@@ -5,7 +5,11 @@ Rails.application.routes.draw do
 
   resources :checklists do
     resources :items
+
+    get "share", to: "checklists#share"
   end
+  post "checklists/share/:shortcode", to: "checklists#add_collaborator"
+
   resources :users, only: %i[create show]
   post "login", to: "auth#login"
 
