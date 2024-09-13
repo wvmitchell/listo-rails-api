@@ -10,4 +10,9 @@ class User < ApplicationRecord
   has_many :collaborated_checklists,
            through: :collaborations,
            source: :checklist
+
+  def save_with_picture
+    self.picture = "https://gravatar.com/avatar/#{Digest::MD5.hexdigest(email)}?s=200&d=identicon"
+    save
+  end
 end

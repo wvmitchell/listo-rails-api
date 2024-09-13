@@ -4,7 +4,7 @@ class UsersController < ApplicationController
   def create
     user = User.new(user_params)
     user.picture =
-      "http://gravatar.com/avatar/#{Digest::MD5.hexdigest(user.email)}?s=200"
+      "https://gravatar.com/avatar/#{Digest::MD5.hexdigest(user.email)}?s=200&d=identicon"
 
     begin
       user.save!
