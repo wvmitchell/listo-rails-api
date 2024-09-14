@@ -13,6 +13,8 @@ set :deploy_to, "/home/deploy/#{fetch(:application)}"
 # Default value for :format is :airbrussh.
 # set :format, :airbrussh
 
+set :assets_roles, []
+
 # You can configure the Airbrussh format using :format_options.
 # These are the defaults.
 # set :format_options, command_output: true, log_file: "log/capistrano.log", color: :auto, truncate: :auto
