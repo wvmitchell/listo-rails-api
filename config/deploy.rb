@@ -28,8 +28,8 @@ set :assets_roles, []
 # Default value for linked_dirs is []
 append :linked_dirs, "log", "tmp/pids", "tmp/cache", "tmp/sockets", "vendor/bundle", ".bundle", "public/system", "public/uploads"
 
-# Only keep the last 3 releases to save disk space
-set :keep_releases, 3
+# Only keep the last 5 releases to save disk space
+set :keep_releases, 5
 
 # Default value for default_env is {}
 # set :default_env, { path: "/opt/ruby/bin:$PATH" }
