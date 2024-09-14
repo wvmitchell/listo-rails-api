@@ -5,4 +5,8 @@ class Checklist < ApplicationRecord
   has_many :collaborators, through: :collaborations, source: :user
 
   validates :title, presence: true, length: { minimum: 1 }
+
+  def members
+    [ owner ] + collaborators
+  end
 end

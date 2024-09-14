@@ -6,7 +6,7 @@ class ChecklistsController < ApplicationController
              checklists: current_user.owned_checklists,
              shared_checklists: current_user.collaborated_checklists
            },
-           include: :collaborators
+           include: :members
   end
 
   def show
@@ -58,6 +58,7 @@ class ChecklistsController < ApplicationController
     shortcode = params[:shortcode]
     checklist_id = Rails.cache.read(shortcode)
     checklist = Checklist.find(checklist_id)
+
 
     unless current_user.owned_checklists.include?(checklist) ||
              checklist.collaborators.include?(current_user)
