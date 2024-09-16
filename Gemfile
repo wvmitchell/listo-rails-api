@@ -39,7 +39,7 @@ gem "capistrano-passenger", "~> 0.2.0"
 gem "capistrano-rbenv", "~> 2.1", ">= 2.1.4"
 
 # Needed for net-ssh
-gem "ed25519", "~> 1.2.4"
+gem "ed25519", "~> 1.3.0"
 gem "bcrypt_pbkdf", "~> 1.1"
 
 group :development, :test do
